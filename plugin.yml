@@ -1,0 +1,14 @@
+name: BountyCommand
+author: Agazed
+description: Bounty system
+website: http://agazed.net
+main: net.agazed.bounty.Bounty
+version: 1.1
+commands:
+  bounty:
+    description: Main command for bounty
+permissions:
+  bounty.use:
+    description: Main permission for bounty
+  bounty.reload:
+    description: Reload permission for bounty 

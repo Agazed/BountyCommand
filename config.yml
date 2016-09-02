@@ -1,0 +1,13 @@
+# Made by Agazed
+# Visit me @ agazed.net!
+
+# Vars: %PLACED_PLAYER%, %PLACER_PLAYER%, %KILLER%
+bounty-placed:
+- broadcast Bounty was placed on %PLACED_PLAYER%!
+bounty-removed:
+- broadcast Bounty was removed on %PLACED_PLAYER%!
+bounty-player-killed:
+- broadcast Bountied player %PLACED_PLAYER% was slain by %KILLER%!
+
+# Don't touch this
+bounties: {}
