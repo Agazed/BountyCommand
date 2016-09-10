@@ -9,5 +9,8 @@ bounty-removed:
 bounty-player-killed:
 - broadcast Bountied player %PLACED_PLAYER% was slain by %KILLER%!
 
+# Minimum amount for a bounty
+min-amount: 100
+
 # Don't touch this
 bounties: {}

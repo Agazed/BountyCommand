@@ -56,6 +56,11 @@ public class Bounty extends JavaPlugin implements Listener {
 					sender.sendMessage(ChatColor.RED + "Invalid amount!");
 					return true;
 				}
+				int minamount = getConfig().getInt("min-amount");
+				if (amount < minamount) {
+					sender.sendMessage(ChatColor.RED + "Minimum amount is $" + Integer.toString(minamount) + "!");
+					return true;
+				}
 				Player target = getServer().getPlayerExact(args[1]);
 				if (target == null) {
 					sender.sendMessage(ChatColor.RED + "Player is offline or does not exist!");
