@@ -29,11 +29,11 @@ public class Bounty extends JavaPlugin implements Listener {
 	public void onEnable() {
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
-		if (!setupEconomy() ) {
-            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+		if (!setupEconomy()) {
+			log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -203,16 +203,16 @@ public class Bounty extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        econ = rsp.getProvider();
-        return econ != null;
-    }
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
 }
