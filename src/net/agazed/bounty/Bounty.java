@@ -2,6 +2,7 @@ package net.agazed.bounty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -17,15 +18,22 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bounty extends JavaPlugin implements Listener {
 
-	private static Economy econ;
+	private static final Logger log = Logger.getLogger("Minecraft");
+	private static Economy econ = null;
 
 	public void onEnable() {
 		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(this, this);
+		if (!setupEconomy() ) {
+            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -66,7 +74,7 @@ public class Bounty extends JavaPlugin implements Listener {
 					player.sendMessage(ChatColor.RED + "Minimum amount is $" + Integer.toString(minamount) + "!");
 					return true;
 				}
-				if (amount > econ.getBalance(player)) {
+				if (amount >= econ.getBalance(player)) {
 					sender.sendMessage(ChatColor.RED + "You don't have enough money!");
 					return true;
 				}
@@ -195,4 +203,16 @@ public class Bounty extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 		}
 	}
+	
+	private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
 }
