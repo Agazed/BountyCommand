@@ -2,6 +2,9 @@ package net.agazed.bounty;
 
 import java.util.Arrays;
 import java.util.List;
+
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,6 +20,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bounty extends JavaPlugin implements Listener {
+
+	private static Economy econ;
 
 	public void onEnable() {
 		saveDefaultConfig();
@@ -53,12 +58,16 @@ public class Bounty extends JavaPlugin implements Listener {
 				try {
 					amount = Integer.parseInt(args[2]);
 				} catch (NumberFormatException e) {
-					sender.sendMessage(ChatColor.RED + "Invalid amount!");
+					player.sendMessage(ChatColor.RED + "Invalid amount!");
 					return true;
 				}
 				int minamount = getConfig().getInt("min-amount");
 				if (amount < minamount) {
-					sender.sendMessage(ChatColor.RED + "Minimum amount is $" + Integer.toString(minamount) + "!");
+					player.sendMessage(ChatColor.RED + "Minimum amount is $" + Integer.toString(minamount) + "!");
+					return true;
+				}
+				if (amount > econ.getBalance(player)) {
+					sender.sendMessage(ChatColor.RED + "You don't have enough money!");
 					return true;
 				}
 				Player target = getServer().getPlayerExact(args[1]);
